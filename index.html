@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="author" content="tontisa"/>
+    <meta name="keywords" content="产品采购,产品,采购" />
+    <title>产品采购</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    <script src="http://cdnfile.op110.com.cn/controls/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://cdnfile.op110.com.cn/controls/layer/layer.js"></script>
+    <script src="layui/layui.js"></script>
+    <script type="text/javascript" src="lincase/script/locale/wb-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="lincase/script/wb.js"></script>
+    <script type="text/javascript" src="lincase/script/locale/wb-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="http://cdnfile.op110.com.cn/controls/ext/ext-all.js"></script>
+    <script type="text/javascript" src="http://cdnfile.op110.com.cn/controls/ext/locale/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+    <script type="text/javascript" src="lincase/script/wb.js"></script>
+    <script type="text/javascript" src="lincase/script/designer.js"></script>
+    <script type="text/javascript" src="lincase/script/portal.js"></script>
+    <script type="text/javascript" src="lincase/controls/codemirror/mixed.js"></script>
+<script  type="text/html" id="page_tpl">
+    <div id="page">
+    </div>
+    <div id="product_page"></div>
+</script>  
+</head>
+<body>
+  <header id="top">
+    <!--头部搜索-->
+    <div id="top_box">
+        <div id="top_content">
+            <div id="search_nav">
+                <!--名称-->
+                <div id="pro_name" class="lf">产品采购</div>
+                <!--所在城市-->
+                <div id="pro_city" class="lf">
+                    <span id="location_city">不限</span>
+                    <span><i class="triangle_down_1"></i></span>
+                    <p><span>出发城市</span></p>
+                    <div id="pro_city_box">
+                      <div class="pro_city_box_top">
+                        <div class="pro_city_choice lf">选择出发城市</div>
+                        <div><i class="pro_city_box_close rt"></i></div>
+                      </div>
+                      <div class="pro_city_box_middle">
+                        <span>全部</span>
+                        <span>A</span>
+                        <span>B</span>
+                        <span>C</span>
+                        <span>D</span>
+                        <span>E</span>
+                        <span>F</span>
+                        <span>G</span>
+                        <span>H</span>
+                        <span>I</span>
+                        <span>J</span>
+                        <span>K</span>
+                        <span>L</span>
+                        <span>M</span>
+                        <span>N</span>
+                        <span>O</span>
+                        <span>P</span>
+                        <span>Q</span>
+                        <span>R</span>
+                        <span>S</span>
+                        <span>T</span>
+                        <span>U</span>
+                        <span>V</span>
+                        <span>W</span>
+                        <span>X</span>
+                        <span>Y</span>
+                        <span>Z</span>
+                      </div>
+                      <div class="pro_city_box_bottom"></div>
+                    </div>
+                </div>
+                <!--搜索栏-->
+                <div id="serch_bar">
+                    <input type="text" name="serch" id="serch_content" placeholder="产品关键字\产品编号\供应商\团号">
+                    <button id="btn">搜索</button>
+                </div>
+                <div id="search_icon" class="rt">
+                    <span style="display:inline-block"><i id="icon_1" title="显示同行价" class="hide_price"></i></span>
+                    <span style="display:inline-block"><i id="icon_2" title="隐藏供应商" class="show_supplier"></i></span>
+                    <span style="display:inline-block"><i id="icon_3" title="隐藏更多搜索条件" class="show_condition"></i></span>
+                </div>
+            </div>
+            <div class="nav_line"></div>
+            <!--导航栏-->
+            <div id="nav_product" class="clear">
+                <!--导航数据大于一行分割-->
+                <ul id="nav_ul_some">
+
+                </ul>
+                <ul id="nav_ul_more">
+
+                </ul>
+                <!--导航数据小于一行-->
+                <ul id="nav_ul_all">
+
+                </ul> 
+            </div>
+        </div>
+    </div> 
+  </header>
+    <!--中部内容-->
+  <div id="main_content">
+      <!--筛选条件-->
+      <div id="condition">
+          <div id="condition_list">
+              <!--出发城市-->
+              <dl id="city">
+                  <dt class="lf">出发城市</dt>
+                  <dd id="list_details_city" class="list_details list_details_city">
+                    
+                  </dd>
+              </dl>
+              <!--供应商-->
+              <dl id="supplier">
+                  <dt class="lf">供应商</dt>
+                  <dd id="list_details_supplier" class="list_details list_details_sup">
+                  </dd>
+                  <div id="city_pro_city_box">
+                    <div class="city_pro_city_box_top">
+                      <div class="city_pro_city_choice lf">选择供应商</div>
+                      <div><i class="city_pro_city_box_close rt"></i></div>
+                    </div>
+                    <div class="city_pro_city_box_middle">
+                      <span>全部</span>
+                      <span>A</span>
+                      <span>B</span>
+                      <span>C</span>
+                      <span>D</span>
+                      <span>E</span>
+                      <span>F</span>
+                      <span>G</span>
+                      <span>H</span>
+                      <span>I</span>
+                      <span>J</span>
+                      <span>K</span>
+                      <span>L</span>
+                      <span>M</span>
+                      <span>N</span>
+                      <span>O</span>
+                      <span>P</span>
+                      <span>Q</span>
+                      <span>R</span>
+                      <span>S</span>
+                      <span>T</span>
+                      <span>U</span>
+                      <span>V</span>
+                      <span>W</span>
+                      <span>X</span>
+                      <span>Y</span>
+                      <span>Z</span>
+                      <span>#</span>
+                    </div>
+                    <div class="city_pro_city_box_bottom"></div>
+                  </div>  
+              </dl>
+              <!--价格区间-->
+              <dl id="price">
+                  <dt class="lf">价格区间</dt>
+                  <dd id="list_details_price" class="list_details">
+                    <span data-startprice="" data-endprice="500">500元以下</span>
+                    <span data-startprice="500" data-endprice="1000">500-1000元</span>
+                    <span data-startprice="1000" data-endprice="2000">1000-2000元</span>
+                    <span data-startprice="2000" data-endprice="3000">2000-3000元</span>
+                    <span data-startprice="3000" data-endprice="">3000元以上</span>
+                    <div class="layui-inline">
+                      <div class="layui-input-inline">
+                        <input type="text" name="price_min" style="width:70px;height:25px" placeholder="￥" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <span>-</span>
+                    <div class="layui-inline">
+                      <div class="layui-input-inline">
+                        <input type="text" name="price_max" style="width:70px;height:25px;margin-left:-14px" placeholder="￥" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <button class="btn_price">确定</button>
+                    </dd>
+              </dl>
+              <!--行程天数-->
+              <dl id="days">
+                  <dt class="lf">行程天数</dt>
+                  <dd id="list_details_days" class="list_details">
+                    <span data-days="1">1天</span>
+                    <span data-days="2">2天</span>
+                    <span data-days="3">3天</span>
+                    <span data-days="4">4天</span>
+                    <span data-days="5">5天</span>
+                    <span data-days="6">6天</span>
+                    <span data-days="7">7天</span>
+                    <span data-days="8">8天</span>
+                    <span data-days="9" data-moreday="1">8天以上</span>
+                  </dd>
+              </dl>
+              <!--出发日期-->
+              <dl id="start_date">
+                  <dt class="lf">出发日期</dt>
+                  <dd id="list_details_date" class="list_details">
+
+                  </dd>
+              </dl>
+          </div>
+          <!--所选条件展示-->
+          <div id="condition_show">
+              <div id="choose_show">
+                  <div class="lf">已选条件</div>
+                  <ul id="choose_show_details" class="lf">
+                    
+                  </ul>
+              </div>
+              <div id="del_all_condition" class="rt">全部清除</div>
+          </div>
+      </div>
+      <div id="product" class="clear">
+          <!--按条件筛选-->
+          <div id="product_choice">
+              <ul class="lf">
+                  <li class="lf">
+                      <span id="rank_all" class="rank_all_active">综合排序</span>
+                      <span class="vertical-line"></span>
+                  </li>
+                  <li class="lf">
+                      <span class="high_price" style="margin-right:20px">价格<i class="triangle_high"></i><i class="triangle_low"></i></span>
+                      <span class="m_price" style="margin-left:20px;">利润<i class="m_triangle_high"></i><i class="m_triangle_low"></i></span>
+                      <span class="hot_sale" style="margin-left:40px;">销量</span>
+                      <span class="new_pro" style="margin-left:20px;">新品</span>
+                      <span class="vertical-line"></span>
+                  </li>
+                  <li class="lf">
+                      <span>余位状态</span> 
+                      <span>
+                          <div  class="rest_status" action="">
+                              <select id="rest_status_content">
+                                  <option value="">全部</option>
+                                  <option value="yw">有位</option>
+                                  <option value="zm">暂满</option>
+                                  <option value="my">满员</option>
+                              </select>
+                          </div>
+                      </span>
+                      <span class="vertical-line"></span>
+                  </li>
+                  <li class="lf">
+                      <span>确认类型</span>
+                      <span>
+                          <div class="confirm_type rt">
+                              <select id="confirm_type_content">
+                                  <option value="">全部类型</option>
+                                  <option value="1">实时产品</option>
+                                  <option value="2">二次确认</option>
+                              </select>
+                          </div>
+                      </span>
+                  </li>
+              </ul>
+              <div id="type" class="rt">
+                  <p id="line_type" class="pub_line_type lf">按线路</p>
+                  <p id="plan_type" class="pub_plan_type lf">按团期</p>
+              </div>
+          </div>
+          <!--产品列表-->
+          <div id="product_box">
+              <div id="product_list">
+                  <!--分页显示产品列表-->
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- 供应商发布产品详情页 -->
+  <div id="product_detail_mask"></div> <!--遮罩层-->
+  <div id="product_detail_page">
+    <div>
+      <div class="p_intro">
+          <!-- 这里是门店抬头信息 -->
+  <!-- <div class="lf">产品介绍</div> -->
+          <div class="rt"><i class="close_icon"></i></div>
+      </div>
+      <span id="store_head_div"></span><br/>
+      <img style="width:100%;padding:0;" id="store_head_img">
+        <div class="p_intro_detail">
+            <div class="lf p_image"><img></div>
+            <div class="rt p_intro_text">
+                <div id="print_title" class="p_intro_title"></div>
+                <div class="description_con"></div>
+                <div class="description_con_more">
+                  <img src="https://tcdn.op110.com.cn/files/1/file/20180527/1530086749905R645VX9F79.png">
+                </div>
+                <div class="line_detail">
+                    <div class="line_detail_left lf">
+                        <ul>
+                            <li class="line_detail_list lf"><span>产品编码：</span><span class="pro_code"></span></li>
+                            <li class="line_detail_list lf"><span>行程天数：</span><span class="pro_day"></span></li>
+                            <li class="line_detail_list lf"><span>线路分类：</span><span class="line_type"></span></li>
+                            <li class="line_detail_list lf"><span>成人价：</span><span>￥</span><span class="adult_price"></span></li>  
+                            <li class="line_detail_list lf"><span>儿童价：</span><span>￥</span><span class="child_price"></span></li>
+                        </ul>
+                    </div>
+                    <div class="rt clear"><a class="line_detail_right">报名</a></div>
+                </div>
+                <div class="download">
+                    <a class="download_consult">导出参考行程
+                      <div id="download_consult_box">
+                        <div>
+                          <span><img src="https://tcdn.op110.com.cn/files/1/file/20180617/15318080340589DPP6GD3AL.png" style="vertical-align:bottom"></span>
+                          <span>参考行程（PDF）</span>
+                          <span class="download_consult_pdf">下载</span>
+                        </div>
+                        <div>
+                          <span><img src="https://tcdn.op110.com.cn/files/1/file/20180617/1531808528262YJCX7C5ZAR.png" style="vertical-align:bottom"></span>
+                          <span>参考行程（Word）</span>
+                          <span class="download_consult_word">下载</span>
+                        </div>
+                      </div>
+                    </a>
+<!--                         <span class="download_travel">导出本团行程</span> -->
+                    <a class="download_attachment">下载附件
+                      <div class="down_load_box_2" style="display:none"></div>
+                    </a>
+                    <a class="print_travel">打印行程</a>
+                </div>
+            </div>
+        </div>
+        <div id="travel" class="clear">
+            <div class="travel_title">行程特色</div>
+            <div class="travel_box">
+            </div>
+        </div>
+        <div id="arrangement">
+            <div class="arrangement_title">线路参考行程</div>
+            <div class="arrangement_box">
+                
+            </div>
+        </div>
+        <div id="flight">
+            <div class="flight_title">参考航班</div>
+            <div class="flight_box"></div>
+        </div>
+        <div id="hotel">
+            <div class="hotel_title">参考酒店</div>
+            <div class="hotel_box"></div>
+        </div>
+        <div id="fee">
+            <div class="fee_title">费用说明</div>
+            <div class="fee_box"></div>
+        </div>
+        <div id="shopping">
+            <div class="shopping_title">自费及购物项目</div>
+            <div class="shopping_box">
+                <div id="self_fee">
+                  <div id="self_fee_content">
+                    <img src="https://tcdn.op110.com.cn/files/1/file/20180528/15301785273954VKW6SUALX.png">
+                    <span id="self_fee_title">自费项目</span>
+                  </div>
+                  <ul id="self_fee_list">
+                  </ul>
+                </div>
+                <div id="shopping_fee">
+                  <div id="shopping_fee_content">
+                    <img src="https://tcdn.op110.com.cn/files/1/file/20180528/1530178545165IE6HYM2ROZ.png">
+                    <span id="shopping_fee_title">购物项目</span>
+                  </div> 
+                  <ul id="shopping_fee_list">
+                  </ul>
+                </div>
+            </div>
+        </div>
+        <div id="attention">
+            <div class="attention_title">注意事项</div>
+            <div class="attention_box"></div>
+        </div>
+        <div id="p_btn">
+            <button id="to_top">返回顶部</button>
+            <button id="close">关闭</button>
+        </div>
+    </div>
+  </div>
+  <div id="to_top_icon">
+    <img src="https://tcdn.op110.com.cn/files/1/file/20180419/返回顶部%20_1524148638168.png">
+    <p style="color:#666;text-align:center;">返回顶部<p>
+  </div>
+    <script>
+      init();
+    </script>
+</body>
+</html>

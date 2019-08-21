@@ -1,0 +1,558 @@
+
+<!doctype html>
+<html lang="zh-cn">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=uft-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>下单</title>
+  <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+  <link rel="stylesheet" href="https://s.tontisa.cn/scripts/amazeui/2.4.1/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="http://cdnfile.op110.com.cn/controls/laydate/skins/default/laydate.css">
+  <link rel="stylesheet" href="layui/css/layui.css">
+  <script type="text/javascript" src="http://cdnfile.op110.com.cn/controls/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://cdnfile.op110.com.cn/controls/ext/ext-all.js"></script>
+  <script type="text/javascript" src="lincase/script/locale/wb-lang-zh_CN.js"></script>
+  <script type="text/javascript" src="lincase/script/wb.js"></script>
+  <script type="text/javascript" src="http://cdnfile.op110.com.cn/controls/layer/layer.js"></script>
+  <script type="text/javascript" src="http://cdnfile.op110.com.cn/controls/laydate/laydate.js"></script>
+  <script src="layui/layui.js"></script>
+  <script type="text/javascript" src="https://cdn.op110.com.cn/controls/plupload.full.min.js"></script>
+  <script type="text/javascript" src="//cdn.bootcss.com/qiniu-js/1.0.17.1/qiniu.min.js"></script>
+  <script type="text/javascript" src="lincase/controls/jquery/jQuery.Hz2Py-min.js"></script>
+  <script src="https://s.tontisa.cn/scripts/amazeui/2.4.1/js/amazeui.min.js"></script>
+<!--   <script type="text/javascript" src="https://s.tontisa.cn/scripts/amazeui/2.4.1/js/amazeui.min.js"></script> -->
+  <script src="https://cdn.op110.com.cn/global/js/qiniu.js"></script>
+</head>
+
+<body>
+  <div id="web-container" class="space">
+    <!--       <div class="navbar"> -->
+    <div id="top">
+      <h1 class="space">报名、占位</h1>
+    </div>
+    <div id="header">
+      <div class="space">
+        <div>
+          <h2 id="lineTitle" data-lineid="0"></h2>
+          <b id="confirm_type">实时产品</b>
+        </div>
+        <ul class="clear">
+          <li class="fl" id="lineID">产品编号：</li>
+          <li class="fl" id="days">行程天数：</li>
+          <li class="fl" id="lineTypeName">产品类型：</li>
+          <li class="fl" id="supCpyName" style="width:500px;display:none;">供应商：</li>
+        </ul>
+      </div>
+    </div>
+    <!--       </div> -->
+    <div id="main">
+      <div class="clear space">
+        <div id="group" class="fl manner">
+          <b class="num">1</b>
+          <h1 class="title">选择团期</h1>
+          <div id="planCalendar" class="m-calendar"></div>
+        </div>
+        <div id="schedule" class="fr manner">
+          <b class="num">2</b>
+          <h1 class="title">填写预定信息<span id="planCode" style="margin-left:10px;"></span></h1>
+          <div>
+            <ul class="clear">
+              <li class="fl">
+                <b>出团日期：</b>
+                <span id="planDate"></span>
+              </li>
+              <li class="fl" style="margin-left: 30px;">
+                <b>计划位：</b>
+                <span id="planNum" style="color: #29c90f;"></span>
+              </li>
+              <li class="fl" style="margin-left: 30px;">
+                <b>余位：</b>
+                <span id="endNum" style="color: #ff0000;"></span>
+              </li>
+            </ul>
+            <ul class="clear">
+              <li class="fl">
+                <b>出发城市：</b>
+                <select id="fromCity">
+                  <option></option>
+                </select>
+              </li>
+              <li class="fr">
+                <b>价格套餐：</b>
+                <select id="priceMeal">
+                  <option></option>
+                </select>
+              </li>
+            </ul>
+            <div id="plan_info_content">
+              <b>团期备注：</b>
+              <span id="plan_info_content_look">
+              </span>
+              <div id="plan_info_content_box" class="layui-anim" data-anim="layui-anim-scale">
+                <div class="plan_info_title">团期备注：
+                  <span><img class="plan_info_btn_close"
+                      src="https://tcdn.op110.com.cn/files/1/file/20180617/1531820344904EHUGHTUOQL.png"></span>
+                </div>
+                <div class="plan_info_text"></div>
+                <div class="plan_info_btn">
+                  <button class="plan_info_btn_close">关闭</button>
+                </div>
+              </div>
+            </div>
+            <ul class="clear">
+              <li class="fl">
+                <b>预定人数：</b>
+              </li>
+              <li class="fl">
+                <div class="orderper">
+
+                  <ul class="clear">
+                    <li class="percount">
+                      <ul class="clear" class="ul_style">
+                        <li class="pertype">成人</li>
+                        <li class="fl" style="height:30px;">
+                          <ul class="clear" class="ul_style">
+                            <li class="countsub">-</li>
+                            <li class="countendter"><input value=0 id="aduNum"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"></li>
+                            <li class="countadd">+</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="perprice"><span id="adultPrice">￥0.00</span>/人</li>
+                  </ul>
+
+                  <ul class="clear">
+                    <li class="percount">
+                      <ul class="clear">
+                        <li class="pertype">小童占床</li>
+                        <li class="fl">
+                          <ul class="clear">
+                            <li class="countsub">-</li>
+                            <li class="countendter"><input value=0 id="chdNum"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"></li>
+                            <li class="countadd">+</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="perprice"><span id="childPrice">￥0.00</span>/人</li>
+                  </ul>
+
+                  <ul class="clear">
+                    <li class="percount">
+                      <ul class="clear">
+                        <li class="pertype">小年轻</li>
+                        <li class="fl">
+                          <ul class="clear">
+                            <li class="countsub">-</li>
+                            <li class="countendter"><input value=0 id="aduNum1"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"></li>
+                            <li class="countadd">+</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="perprice"><span id="adultPrice1">￥0.00</span>/人</li>
+                  </ul>
+
+                  <ul class="clear">
+                    <li class="percount">
+                      <ul class="clear">
+                        <li class="pertype">老人</li>
+                        <li class="fl">
+                          <ul class="clear">
+                            <li class="countsub">-</li>
+                            <li class="countendter"><input value=0 id="aduNum2"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"></li>
+                            <li class="countadd">+</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="perprice"><span id="adultPrice2">￥0.00</span>/人</li>
+                  </ul>
+
+                  <ul class="clear">
+                    <li class="percount">
+                      <ul class="clear">
+                        <li class="pertype">小童不占床</li>
+                        <li class="fl">
+                          <ul class="clear">
+                            <li class="countsub">-</li>
+                            <li class="countendter"><input value=0 id="chdNum1"
+                                onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"
+                                onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"></li>
+                            <li class="countadd">+</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="perprice"><span id="childPrice1">￥0.00</span>/人</li>
+                  </ul>
+
+                </div>
+              </li>
+            </ul>
+            <div id="dingPrice_box" style="display:none;">
+              <b style="width:60px;display:inline-block;text-align:right;">定金：</b>
+              <span id="ding_price"></span>
+            </div>
+            <div class="layui-form">
+              <div class="layui-form-item">
+                <label class="layui-form-label">选择合同：</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="contract" lay-filter="contract" value="纸质合同" title="纸质合同" checked>
+                  <input type="radio" name="contract" lay-filter="contract" value="电子合同" 
+                         id="e_contract" title="电子合同">
+                  	<a id="e_contract_img" href="javascript:void(0)" style="display:none;" >	
+                  <img  src="https://tcdn.op110.com.cn/files/1/file/20180414/1526265746990XLA91WV87Q.png">
+                  </a>
+                </div>
+                <div id="e_contract_hint" style="display:none;color: red;margin-left: 60px;">
+                   只有已审核的名单才能发起电子合同，请在订单管理中审核名单后发起电子合同！
+                </div>
+              </div>
+            </div>
+            <div id="paper_contract">
+              <select id="contract" multiple data-am-selected="{searchBox:1,maxHeight:200}">
+
+              </select>
+            </div>
+            <div id="ele_contract" class="layui-form">
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <input id="ele_contract_content" type="text" name="title" placeholder="电子合同编号由系统自动生成且会产生相关费用"
+                    class="layui-input" disabled>
+                 
+                </div>
+              </div>
+            </div>
+            <div id="ele_contract_list" style="display: none;margin-left: 63px;" >
+              <select id="ele_contract_select" style='height: 40px;border: 1px solid #eee;'>
+                <option value="">请选择电子合同认证旅行社</option>
+              </select>
+            </div>
+            <div>
+              <b>选择保险：</b>
+              <select id="insurance" data-am-selected="{searchBox: 1}">
+
+              </select>
+            </div>
+            <div id="info_tips">
+              <!--仅确认报名时才需选择合同和保险, 否则选择无效！ -->
+              <img src="https://tcdn.op110.com.cn/files/1/file/20180414/1526265746990XLA91WV87Q.png">
+              <span>仅确认报名时合同和保险的选择有效，占位时无效！</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="other" class="manner space othermsg">
+        <b class="num">3</b>
+        <h1 class="title">填写其他信息</h1>
+        <div>
+          <ul class="clear">
+            <li class="fl">
+              <span class="must">*</span>
+              <b>联系人姓名：</b>
+              <input type="text" id="userName" />
+            </li>
+            <li class="fl">
+              <span class="must">*</span>
+              <b>联系人电话：</b>
+              <input type="text" id="userPhone" />
+            </li>
+          </ul>
+          <ul class="clear">
+            <li class="fl" style="width:61px;margin-left:23px;">
+              <b>备注说明:</b>
+            </li>
+            <li class="fl">
+              <textarea style="width:745px;height:165px;resize:none;" id="ordBak"></textarea>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id="list" class="space mingdandiv">
+        <b class="num">4</b>
+        <h1 class="title">录入游客名单</h1>
+        <ul class="clear mingdantool">
+          <li class="fl">
+            <a href="javascript:void(0)" id="distinGuish"><img
+                src="https://cdn.op110.com.cn/lib/imgs/erp/idcard.png">证件识别</a>
+          </li>
+          <li class="fl">
+            <a href="javascript:void(0)" id="importMingdan"><img
+                src="https://cdn.op110.com.cn/lib/imgs/erp/import.png">导入名单</a>
+          </li>
+          <li class="fl">
+            <a href="javascript:void(0)" id="downloadMingdan" title="单击导出该页面录入的名单"><img
+                src="https://cdn.op110.com.cn/lib/imgs/erp/download.png">导出名单</a>
+          </li>
+        </ul>
+        <div id="mingdans">
+          <div id="mingdansDiv">
+
+          </div>
+        </div>
+      </div>
+      <div id="otherBill" class="space">
+        <b class="num">5</b>
+        <h1 class="title">其他费用项目</h1>
+        <div style='clear: both' id="otherBillList">
+
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <div class="space clear">
+        <div id="increase_fee" class="fl" style="display:none;">
+          <ul class="clear">
+            <li class="fl amounttext">
+              费用增减：
+            </li>
+            <li class="fl">
+              <!--                 <div class="amountall" id="amountall">￥0.00</div> -->
+              <div class="layui-inline" style="width:90px;margin-top:12px;">
+                <div class="layui-input-inline">
+                  <input type="text" id="thePrice" name="thePrice" placeholder="￥" autocomplete="off"
+                    class="layui-input" style="width: 80px;height:30px;">
+                </div>
+              </div>
+              <div class="layui-inline" style="margin-top:12px;">
+                <div class="layui-input-inline">
+                  <input id="thePrice_reason" type="text" name="reason" autocomplete="off" placeholder="请输入费用说明"
+                    class="layui-input" style="width: 130px;height:30px;">
+                </div>
+              </div>
+              <p style="margin-top:5px;color:#999;">输入正数增加总价,输入负数减少总价</p>
+            </li>
+            <!--               <li class="fl">
+                <div id="amountdetail">成人0位， 小童占床0位<br>含杂费<span style="color:red;font-size:15px;font-weight:bold;">￥0/人</span></div>
+              </li> -->
+          </ul>
+        </div>
+        <div class="fr">
+          <div style="text-align:center;">
+            <div id="check_amount">
+              <span>查看费用明细</span>
+              <div class="check_amount_box">
+                <div class="check_amount_title">费用明细</div>
+                <div class="check_amount_all">
+                  <p class="check_amount_price clear"><span class="fl">总团费</span><span class="fr">
+                    <span >￥<span class="amount_all"></span></span></span></p>
+                  <p class="check_amount_adult clear"><span class="fl">成人</span><span class="fr"><span
+                        class="amount_adult">￥0</span></span></p>
+                  <p class="check_amount_child clear"><span class="fl">小童占床</span><span class="fr"><span
+                        class="amount_child">￥0</span></span></p>
+                  <p class="check_amount_adult clear"><span class="fl">小年轻</span><span class="fr"><span
+                        class="amount_adult1">￥0</span></span></p>
+                  <p class="check_amount_child clear"><span class="fl">老人</span><span class="fr"><span
+                        class="amount_adult2">￥0</span></span></p>
+                  <p class="check_amount_child clear"><span class="fl">小童不占床</span><span class="fr"><span
+                        class="amount_child1">￥0</span></span></p>
+                  <p class="check_amount_child clear"><span class="fl">杂费</span><span class="fr"><span
+                        class="amount_other">￥0</span></span></p>
+                </div>
+                <p class="check_amount_insurance clear" style="display:none;"><span class="fl">保险费用</span>
+                  <span class="fr">
+                  <span >￥<span class="insurance_price"></span></span></span></p>
+                <!-- 其他費用項目 -->
+                <div class="other_amount_all" style="display:none;">
+                  <p class="other_amount_price clear check_amount_change">
+                    <span class="fl">其他费用项目</span>
+                    <span class="fr">
+                      <span >￥<span class="other_amount_all_price"></span></span>
+                    </span>
+                  </p>
+                  <div id="other_amount_list">
+                  </div>
+                </div>
+                <!-- end 費用項目 --> 
+                <p class="check_amount_change clear"><span class="fl">费用增减</span><span class="fr"><span
+                      class="thePrice">￥0</span></span></p>
+                <p class="check_amount_total clear"><span class="fl">结算价格</span><span class="fr"><span
+                      class="orderAllAmount">￥</span></span></p>
+              </div>
+            </div>
+            <span>结算价格：</span><span id="accountBalance"
+              style="font-size:15px;font-weight:bold;color:#F67812;">￥0.00</span>
+          </div>
+          <button class="btn" id="order">确认报名</button>
+          <button class="btn" id="preOrder">占位</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 供应商发布产品详情页 -->
+  <div id="product_detail_mask"></div>
+  <!--遮罩层-->
+  <div id="product_detail_page">
+    <div>
+      <div class="p_intro">
+        <div class="lf">产品介绍</div>
+        <div class="rt"><i class="close_icon"></i></div>
+      </div>
+      <div class="p_intro_detail">
+        <div class="lf p_image"><img></div>
+        <div class="rt p_intro_text">
+          <div class="p_intro_title"></div>
+          <div class="description_con"></div>
+          <div class="description_con_more">
+            <img src="https://tcdn.op110.com.cn/files/1/file/20180527/1530086749905R645VX9F79.png">
+          </div>
+          <div class="line_detail">
+            <div class="line_detail_left lf">
+              <ul>
+                <li class="line_detail_list lf"><span>产品编码：</span><span class="pro_code"></span></li>
+                <li class="line_detail_list lf"><span>行程天数：</span><span class="pro_day"></span></li>
+                <li class="line_detail_list lf"><span>线路分类：</span><span class="line_type"></span></li>
+                <li class="line_detail_list lf"><span>成人价：</span><span>￥</span><span class="adult_price"></span></li>
+                <li class="line_detail_list lf"><span>儿童价：</span><span>￥</span><span class="child_price"></span></li>
+              </ul>
+            </div>
+            <div class="rt"><a class="line_detail_right">报名</a></div>
+          </div>
+          <div class="download">
+            <a class="download_consult">导出参考行程
+              <div id="download_consult_box">
+                <div>
+                  <span><img src="https://tcdn.op110.com.cn/files/1/file/20180617/15318080340589DPP6GD3AL.png"
+                      style="vertical-align:bottom"></span>
+                  <span>参考行程（PDF）</span>
+                  <span class="download_consult_pdf">下载</span>
+                </div>
+                <div>
+                  <span><img src="https://tcdn.op110.com.cn/files/1/file/20180617/1531808528262YJCX7C5ZAR.png"
+                      style="vertical-align:bottom"></span>
+                  <span>参考行程（Word）</span>
+                  <span class="download_consult_word">下载</span>
+                </div>
+              </div>
+            </a>
+            <!--                         <span class="download_travel">导出本团行程</span> -->
+            <a class="download_attachment">下载附件
+              <div class="down_load_box_2" style="display:none"></div>
+            </a>
+            <a class="print_travel">打印行程</a>
+          </div>
+        </div>
+      </div>
+      <div id="travel">
+        <div class="travel_title">行程特色</div>
+        <div class="travel_box">
+        </div>
+      </div>
+      <div id="arrangement">
+        <div class="arrangement_title">线路参考行程</div>
+        <div class="arrangement_box">
+
+        </div>
+      </div>
+      <div id="flight">
+        <div class="flight_title">参考航班</div>
+        <div class="flight_box"></div>
+      </div>
+      <div id="hotel">
+        <div class="hotel_title">参考酒店</div>
+        <div class="hotel_box"></div>
+      </div>
+      <div id="fee">
+        <div class="fee_title">费用说明</div>
+        <div class="fee_box"></div>
+      </div>
+      <div id="shopping">
+        <div class="shopping_title">自费及购物项目</div>
+        <div class="shopping_box">
+          <div id="self_fee">
+            <div id="self_fee_content">
+              <img src="https://tcdn.op110.com.cn/files/1/file/20180528/15301785273954VKW6SUALX.png">
+              <span id="self_fee_title">自费项目</span>
+            </div>
+            <ul id="self_fee_list">
+            </ul>
+          </div>
+          <div id="shopping_fee">
+            <div id="shopping_fee_content">
+              <img src="https://tcdn.op110.com.cn/files/1/file/20180528/1530178545165IE6HYM2ROZ.png">
+              <span id="shopping_fee_title">购物项目</span>
+            </div>
+            <ul id="shopping_fee_list">
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="attention">
+        <div class="attention_title">注意事项</div>
+        <div class="attention_box"></div>
+      </div>
+      <div id="p_btn">
+        <button id="to_top">返回顶部</button>
+        <button id="close">关闭</button>
+      </div>
+    </div>
+  </div>
+  <div id="to_top_icon">
+    <img src="https://tcdn.op110.com.cn/files/1/file/20180419/返回顶部%20_1524148638168.png">
+    <p style="color:#666;text-align:center;">返回顶部<p>
+  </div>
+  <!--     <div id="maskDiv" class="maskDiv" style="display: none;"></div>
+    <div id="progressBar" class="progressBar" style="display: none; ">数据加载中，请稍等...</div>  -->
+  <!--电子合同预览弹窗-->
+  <div id="ele_contract_bg">
+  </div>
+  <div class="ele_contract_win_close" style="display:none;">
+    <img class="fr" src="https://tcdn.op110.com.cn/files/1/file/20180613/15314672180415APH8UZLK8.png">
+  </div>
+  <div id="ele_contract_win" class="layui-anim" data-anim="layui-anim-scale" contenteditable="true">
+    <div class="ele_lq_contract" style="display:none;">
+      <!-- 领签-->
+    </div>  
+    <div class="ele_qg_contract" style="display:none;">
+      <!--境内旅游合同-->
+
+
+      <!--  附件上传 -->
+      <div id="contract_file_up" class="layui-form-item layui-form-text">
+        <div class="layui-inline" style="margin-top:30px">
+          <label class="layui-form-label edit_style">附件</label>
+          <div class="layui-input-inline">
+            <div id="container">
+              <div id="pickfiles" title="点击选择本地附件上传">本地上传</div>
+            </div>
+            <div id="imgList">
+              <ul id="imgListBox" class="upload-doc-view clearfix">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a href="#condition" class="ele_save_btn">保存</a>
+  </div>
+</body>
+
+<form style="display:none;"
+  action="http://dev.op110.com.cn/erp_files/ueditor/jsp/controller.jsp?action=uploadfile&erp.id=1"
+  enctype="multipart/form-data" id="o_form_byTpl" method="post" target="o_iframe_byTpl">
+  <input type="file" name="o_file_byTpl" id="o_file_byTpl" />
+</form>
+<iframe id='o_iframe_byTpl' name='o_iframe_byTpl' style="display:none" />
+
+<form style="display:none;"
+  action="http://dev.op110.com.cn/erp_files/ueditor/jsp/controller.jsp?action=uploadfile&erp.id=1"
+  enctype="multipart/form-data" id="distin_guish_form_upload" method="post" target="distin_guish_upload_ifm">
+  <input type="file" name="upfile" accept=".jpg,.png,.jpeg,.bmp,.tif" id="distin_guish_upload_input" />
+</form>
+<iframe id='distin_guish_upload_ifm' name='distin_guish_upload_ifm' style="display:none" />
+
+</html>
